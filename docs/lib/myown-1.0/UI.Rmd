@@ -44,20 +44,20 @@ load("plt_gg_bikeRouteStm.Rda", envir = .GlobalEnv)
 
 ### Body Tags
 
+```{r h1tag}
+tags$h1("This is a heading.")
+```
+
+```{r ptag}
+tags$p("This is a paragraph.")
+```
+
+
 ```{r bodyTags}
 bodyTags <- {
   htmltools::tagList(
-    tags$main(
-      tags$h5(class="center-align",
-      "〖Title〗")
-    ),
-    tags$div(class="container",
-             tags$div(class="row",
-                      tags$div(class="col s3",
-                        tags$h5(class="center-align", "〖sidebar panel〗")),
-                      tags$div(class="col s9",
-                               plt_gg_bikeRouteStm)
-                      ))
+h1tag,
+ptag,
   )
 }
 ```
