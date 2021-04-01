@@ -1,8 +1,0 @@
-xfun::download_file("https://www.dropbox.com/s/y2h4b3sr89u0ftt/election_drake.Rdata?dl=1", mode="wb")
-load("election_drake.Rdata")
-xfun::download_file("https://data.moi.gov.tw/MoiOD/System/DownloadFile.aspx?DATA=72874C55-884D-4CEA-B7D6-F60B0BE85AB0", mode="wb", output = "taiwanMap.zip")
-unzip("taiwanMap.zip")
-.root <- rprojroot::is_rstudio_project$make_fix_file()
-drake_election$.updateCache(".drake_election")
-drake_election$source_plan()
-drake_election$makePlan()
