@@ -39,13 +39,15 @@ web$html_filename <- "index.html"
 if(!file.exists("plt_gg_bikeRouteStm.Rda")) xfun::download_file("https://www.dropbox.com/s/ify9h26c172t7t5/plt_gg_bikeRouteStm.Rda?dl=1", mode="wb")
 load("plt_gg_bikeRouteStm.Rda", envir = .GlobalEnv)
 
+load("plt_taiwanElection_colorFill.Rdata")
+
 ```
 
 
 ### Body Tags
 
 ```{r h1tag}
-tags$h1("This is a heading.")
+tags$h1("This is Taiwan.")
 ```
 
 ```{r ptag}
@@ -57,7 +59,7 @@ tags$p("This is a paragraph.")
 bodyTags <- {
   htmltools::tagList(
 h1tag,
-ptag,
+plt_taiwanElection_colorFill
   )
 }
 ```
