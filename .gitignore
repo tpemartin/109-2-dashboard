@@ -36,3 +36,8 @@ vignettes/*.pdf
 rsconnect/
 UI/.myHtml/
 
+UI/.drake_election/
+.drake_election/
+dash2/.myHtml/
+UI/.drake_election/
+dash2/.dash2/

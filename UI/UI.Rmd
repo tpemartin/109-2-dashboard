@@ -26,6 +26,7 @@ web$html_filename <- "index.html"
 
 ```
 
+
 ### Widgets
 
   * Widgets can be designed in a separate file and saved in a Rdata for loading here.
@@ -59,9 +60,19 @@ tags$p("This is a paragraph.")
 bodyTags <- {
   htmltools::tagList(
 h1tag,
+Badges,
 plt_taiwanElection_colorFill
   )
 }
+```
+
+```{r Badges}
+Badges <- tags$div(class="collection", 
+    tags$a(href="#!", class="collection-item", tags$span(class="badge"," 1"), "Alan"),
+    tags$a(href="#!", class="collection-item", tags$span(class="new badge"," 4"), "Alan"),
+    tags$a(href="#!", class="collection-item"," Alan"),
+    tags$a(href="#!", class="collection-item", tags$span(class="badge"," 14"), "Alan")
+  )
 ```
 
 
