@@ -195,7 +195,7 @@ layout_columns <- tags$div(class="row",
           
 ```
 
-```{r layout_columns}
+```{r layout_columns, drake=F}
 layout_columns <- tags$div(class="row", 
       tags$div(class="col s12 m6 l4", list_plots$`price data`),
       tags$div(class="col s12 m6 l4", list_plots$`price data2`),
@@ -203,6 +203,19 @@ layout_columns <- tags$div(class="row",
       tags$div(class="col s12 m6 l4", list_plots$`price data5`)
     )
           
+```
+
+```{r layout_columns, drake=F}
+layout_columns <- tags$div(class="carousel carousel-slider", 
+    tags$a(class="carousel-item", href="#one!", list_plots$`price data`),
+    tags$a(class="carousel-item", href="#two!", tags$img(src="https://cdn4.buysellads.net/uu/1/3386/1525189943-38523.png")),
+    tags$a(class="carousel-item", href="#three!", tags$img(src="https://cdn4.buysellads.net/uu/1/3386/1525189943-38523.png")),
+    tags$a(class="carousel-item", href="#four!", tags$img(src="https://cdn4.buysellads.net/uu/1/3386/1525189943-38523.png"))
+  )
+```
+
+```{r layout_columns}
+layout_columns <- tagList()
 ```
 
 ### footer
