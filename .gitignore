@@ -4,6 +4,7 @@
 
 # Session Data files
 .RData
+dashboard0/.myHtml/
 
 # Example code in package build process
 *-Ex.R
@@ -41,3 +42,5 @@ UI/.drake_election/
 dash2/.myHtml/
 UI/.drake_election/
 dash2/.dash2/
+dashboard0/.myHtml/
+eventListener/.eventlisten/
