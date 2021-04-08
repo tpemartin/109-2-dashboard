@@ -1,0 +1,370 @@
+---
+drake_cache: ".header_main_footer"
+---
+
+## Materialise Framework
+
+  * <https://materializecss.com/>
+
+## Setup environment
+
+  * Addins: Initiate drake -> `drake$source_plan()` -> `drake$makePlan()`.
+  
+  * `web$browse()` to see the output. 
+  
+  * If any change to Rmd, save the Rmd, then `drake$update()` -> `web$browser()` to see the change.
+  
+  * Your html output file is in `web$output_filepath()`.
+
+```{r makecondition}
+library(dplyr)
+library(htmltools)
+library(econR)
+.GlobalEnv$web <- econR::Web()
+web$foldername="docs" # output folder name
+web$html_filename <- "head_main_footer.html"
+load("inflation_plots.Rdata")
+
+```
+
+### Widgets
+
+```{r}
+xfun::download_file("https://www.dropbox.com/s/4gkv8cmqsmnq9hd/list_inflation_plots.Rdata?dl=1", mode="wb", output="inflation_plots.Rdata")
+load("inflation_plots.Rdata")
+```
+
+```{r}
+plt %>%
+  plotly::rangeslider()
+```
+
+
+### Body Tags
+
+### header
+
+```{r header}
+header <- tags$header(
+  content_header
+)
+```
+
+```{r content_header}
+content_header <- tagList(
+  content_navbar,
+  content_sidenav
+)
+```
+
+#### header: navbar
+
+```{r content_navbar}
+content_navbar <- tagList(
+   tags$nav( 
+    tags$div(class="nav-wrapper", 
+      tags$a(href="#", class="brand-logo center"," Logo"),
+      tags$ul(id="nav-mobile", class="left hide-on-med-and-down", 
+        tags$li( tags$a(href="sass.html"," Sass")),
+        tags$li( tags$a(href="badges.html"," Components")),
+        tags$li( tags$a(href="collapsible.html"," JavaScript"))
+      )
+    )
+  )
+)
+```
+
+#### header: sidenav
+
+```{r content_sidenav}
+content_sidenav <- tagList(
+  tags$ul(id="slide-out", class="sidenav", 
+    tags$li( tags$div(class="user-view", 
+      tags$div(class="background", 
+        tags$img(src="images/office.jpg")
+      ),
+      tags$a(href="#user", tags$img(class="circle", src="images/yuna.jpg")),
+      tags$a(href="#name", tags$span(class="white-text name"," John Doe")),
+      tags$a(href="#email", tags$span(class="white-text email", "jdandturk@gmail.com"))
+    )),
+    tags$li( tags$a(href="#!", tags$i(class="material-icons"," cloud"), "First Link With Icon")),
+    tags$li( tags$a(href="#!"," Second Link")),
+    tags$li( tags$div(class="divider"," ")),
+    tags$li( tags$a(class="subheader"," Subheader")),
+    tags$li( tags$a(class="waves-effect", href="#!"," Third Link With Waves"))
+  ),
+  tags$a(href="#" , `data-target`="slide-out", class="sidenav-trigger", tags$i(class="material-icons"," menu"))
+  
+)
+```
+
+```{r controlPanel}
+controlPanel <- tags$form(action="#", 
+    tags$p( 
+      tags$label( 
+        tags$input(name="group1", type="radio", `checked`=NA ),
+        tags$span(" Red")
+      )
+    ),
+    tags$p( 
+      tags$label( 
+        tags$input(name="group1", type="radio" ),
+        tags$span(" Yellow")
+      )
+    ),
+    tags$p( 
+      tags$label( 
+        tags$input(class="with-gap", name="group1", type="radio"  ),
+        tags$span(" Green")
+      )
+    ),
+    tags$p( 
+      tags$label( 
+        tags$input(name="group1", type="radio", disabled="disabled" ),
+        tags$span(" Brown")
+      )
+    )
+  )
+```
+
+
+```
+content_sidenav <- tagList(
+  tags$ul(id="slide-out", class="sidenav", 
+    tags$li( tags$div(class="user-view", 
+      tags$div(class="background", 
+        tags$img(src="images/office.jpg")
+      ),
+      tags$a(href="#user", tags$img(class="circle", src="images/yuna.jpg")),
+      tags$a(href="#name", tags$span(class="white-text name"," John Doe")),
+      tags$a(href="#email", tags$span(class="white-text email", "jdandturk@gmail.com"))
+    )),
+    tags$li( tags$a(href="#!", tags$i(class="material-icons"," cloud"), "First Link With Icon")),
+    tags$li( tags$a(href="#!"," Second Link")),
+    tags$li( tags$div(class="divider"," ")),
+    tags$li( tags$a(class="subheader"," Subheader")),
+    tags$li( tags$a(class="waves-effect", href="#!"," Third Link With Waves"))
+  ),
+  tags$a(href="#" , `data-target`="slide-out", class="sidenav-trigger", tags$i(class="material-icons"," menu"))
+        
+)
+```
+
+### main
+
+```{r main}
+main <- tags$main(
+  layout_main
+)
+```
+
+#### main: layout
+
+```{r layout_main, drake=F}
+layout_main <- tagList(
+  tags$div(
+    class="container",
+    list_plots$`price data`)
+)
+```
+
+```{r layout_main}
+layout_main <- tagList(
+  tags$div(
+    class="container",
+    layout_columns
+    )
+)
+```
+
+```{r layout_columns, drake=F}
+layout_columns <- tags$div(class="row", 
+      tags$div(class="col s2"," 1"),
+      tags$div(class="col s1"," 2"),
+      tags$div(class="col s1"," 3"),
+      tags$div(class="col s1"," 4"),
+      tags$div(class="col s1"," 5"),
+      tags$div(class="col s1"," 6"),
+      tags$div(class="col s1"," 7"),
+      tags$div(class="col s1"," 8"),
+      tags$div(class="col s1"," 9"),
+      tags$div(class="col s1"," 10"),
+      tags$div(class="col s1"," 11"),
+      tags$div(class="col s1"," 12")
+    )
+          
+```
+
+```{r layout_columns, drake=F}
+layout_columns <- tags$div(class="row", 
+      tags$div(class="col s12 m6 l4", list_plots$`price data`),
+      tags$div(class="col s12 m6 l4", list_plots$`price data2`),
+      tags$div(class="col s12 m6 l4", list_plots$`price data3`),
+      tags$div(class="col s12 m6 l4", list_plots$`price data5`)
+    )
+          
+```
+
+```{r layout_columns, drake=F}
+layout_columns <- tags$div(class="carousel carousel-slider", 
+    tags$a(class="carousel-item", href="#one!", list_plots$`price data`),
+    tags$a(class="carousel-item", href="#two!", tags$img(src="https://cdn4.buysellads.net/uu/1/3386/1525189943-38523.png")),
+    tags$a(class="carousel-item", href="#three!", tags$img(src="https://cdn4.buysellads.net/uu/1/3386/1525189943-38523.png")),
+    tags$a(class="carousel-item", href="#four!", tags$img(src="https://cdn4.buysellads.net/uu/1/3386/1525189943-38523.png"))
+  )
+```
+
+```{r layout_columns}
+layout_columns <- tagList()
+```
+
+### footer
+
+```{r footer}
+footer <- tags$footer(
+  class="page-footer",
+  content_footer
+)
+```
+
+#### footer: content
+
+```{r content_footer}
+content_footer <- tagList()
+```
+
+```{r content_footer, drake=F}
+content_footer <- tagList(
+  tags$div(class="container", 
+            tags$div(class="row", 
+              tags$div(class="col l6 s12", 
+                tags$h5(class="white-text"," Footer Content"),
+                tags$p(class="grey-text text-lighten-4", "You can use rows and columns here to organize your footer content.")
+              ),
+              tags$div(class="col l4 offset-l2 s12", 
+                tags$h5(class="white-text"," Links"),
+                tags$ul( 
+                  tags$li( tags$a(class="grey-text text-lighten-3", href="#!"," Link 1")),
+                  tags$li( tags$a(class="grey-text text-lighten-3", href="#!"," Link 2")),
+                  tags$li( tags$a(class="grey-text text-lighten-3", href="#!"," Link 3")),
+                  tags$li( tags$a(class="grey-text text-lighten-3", href="#!"," Link 4"))
+                )
+              )
+            )
+          ),
+          tags$div(class="footer-copyright", 
+            tags$div(class="container", 
+           " © 2014 Copyright Text",
+            tags$a(class="grey-text text-lighten-4 right", href="#!"," More Links")
+            )
+          )
+)
+```
+
+### body
+
+```{r bodyTags}
+bodyTags <- {
+  htmltools::tagList(
+    header,
+    main,
+    footer
+  )
+}
+```
+
+
+## HTML Structure
+
+```{r html_placeholder}
+html_placeholder <- tags$html(
+  tags$head(
+    do.call(htmltools::tagList, headTags),
+    tags$meta(
+      name="viewport",
+      content="width=device-width, initial-scale=1.0"
+    )
+  ),
+  tags$body(
+    do.call(htmltools::tagList, bodyTags)
+  )
+)
+```
+
+## Dependencies
+
+### Head Tags
+
+```{r headTags}
+headTags <- {
+  htmltools::tagList(
+    htmltools::tags$link(
+      href="https://fonts.googleapis.com/icon?family=Material+Icons",
+      rel="stylesheet"
+    )
+  )
+}
+```
+
+### Define dependency
+
+```{r myDependency}
+myDependency <- htmltools::htmlDependency(
+  name="myown",
+  version="1.0",
+  src=c(filepath=web$cssJsPath),
+  stylesheet = "css/mystyle.css",
+  script = "js/mydesign.js",
+  head = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC">
+'
+)
+```
+
+  * If src is in other path, use `web$config_cssJsPath("your_path")` in **makecondition** -- no need to change `web$cssJsPath` (it will change accordingly).
+
+
+```{r local_jquery}
+local_jquery <- 
+  htmltools::htmlDependency(
+    name="jquery",
+    version="3.5.1",
+    src=c(href = "lib/jquery-3.5.1"),
+    # to use the same library here must use href, not filepath; otherwise, the current jquery system will be removed.
+    script = c("jquery.min.js")
+  )
+```
+
+### Attach dependency
+
+
+```{r html_complete}
+html_complete <- 
+  htmltools::tagList(
+    html_placeholder,
+    web$htmlDependencies$materialise(),
+    local_jquery, 
+    myDependency
+  )
+```
+
+  * If not using jquery from htmlwidgets, replace `local_jquery` with `web$htmlDependencies$jquery()`
+
+
+## Save
+
+```{r save_html}
+htmltools::save_html(
+  html_complete, 
+  file = web$output_filepath(),
+  libdir="lib"
+)
+```
+
+## Browse
+
+```{r}
+web$browse()
+```
+
+
+
