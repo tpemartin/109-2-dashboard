@@ -1,0 +1,358 @@
+---
+drake_cache: ".drake_election"
+---
+
+<nav> <!-- navbar content here  --> </nav>
+```{r sidenav_nav}
+sidenav_nav <- tags$nav()
+```
+
+  <ul id="slide-out" class="sidenav">
+    <li><div class="user-view">
+      <div class="background">
+        <img src="images/office.jpg">
+      </div>
+      <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
+      <a href="#name"><span class="white-text name">John Doe</span></a>
+      <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+    </div></li>
+    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+    <li><a href="#!">Second Link</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Subheader</a></li>
+    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+  </ul>
+  
+```{r sidenav_ulImg}
+sidenav_ulImg <- tags$li( 
+      tags$div(class="user-view", 
+        tags$div(class="background", 
+          tags$img(src="images/office.jpg")
+          ),
+          tags$a(href="#user", 
+                 tags$img(class="circle",
+                          src="https://materializecss.com/images/yuna.jpg")),
+      tags$a(href="#name", tags$span(class="white-text name"," John Doe")),
+      tags$a(href="#email", tags$span(class="white-text email"," jdandturk@gmail.com"))
+    ))
+```
+
+```{r sidenav_ulOtherLi}
+sidenav_ulOtherLi <- tagList(tags$li( tags$a(href="#!", tags$i(class="material-icons"," cloud"), "First Link With Icon")),
+    tags$li( tags$a(href="#!"," Second Link")),
+    tags$li( tags$div(class="divider"," ")),
+    tags$li( tags$a(class="subheader"," Subheader")),
+    tags$li( tags$a(class="waves-effect", href="#!"," Third Link With Waves")))
+```
+
+```{r sidenav_ul}
+sidenav_ul <-   tags$ul(id="slide-out", class="sidenav", 
+    sidenav_ulImg,
+    resultCard_li
+    #sidenav_ulOtherLi
+  )
+```
+
+  <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
+```{r sidenav_a}
+sidenav_a <- tags$a(href="#" , `data-target`="slide-out", class="sidenav-trigger", tags$i(class="material-icons"," menu"))
+```
+
+```{r sidenav}
+sidenav <- tagList(
+  # sidenav_nav,
+  sidenav_ul,
+  sidenav_a
+)
+```
+
+## Materialise Framework
+
+  * <https://materializecss.com/>
+
+```{r}
+xfun::download_file("https://www.dropbox.com/s/2desfhsqbqmq71j/plt_taiwanElection_partyColor.Rdata?dl=1", mode="wb")
+load("plt_taiwanElection_partyColor.Rdata")
+```
+
+## Setup environment
+
+  * Addins: Initiate drake -> `drake$source_plan()` -> `drake$makePlan()`.
+  
+  * `web$browse()` to see the output. 
+  
+  * If any change to Rmd, save the Rmd, then `drake$update()` -> `web$browser()` to see the change.
+  
+  * Your html output file is in `web$output_filepath()`.
+
+```{r makecondition}
+library(dplyr)
+library(htmltools)
+library(econR)
+.GlobalEnv$web <- econR::Web()
+web$foldername="docs2" # output folder name
+web$html_filename <- "index.html"
+
+```
+
+## Body elements
+
+### resultCard
+
+```{r}
+resultCard <- tags$div(class="info-text", 
+         tags$div(class="name"," 宜蘭縣"),
+         tags$ul(class="vote-text", 
+                 tags$li(
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_tsai.png"),
+                   "蔡英文得票率", 
+                   tags$span(class="ddp"," 63.3%")),
+                 tags$li(
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_han.png"),
+                   "韓國瑜得票率",
+                   tags$span(class="kmt"," 32.8%")),
+                 tags$li( tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_song.png"),
+                          "宋楚瑜得票率",
+                          tags$span(class="pfp"," 3.9%"))))
+```
+
+  *
+   
+  *
+  
+  *
+  
+<ul>
+<li> </li>
+<li> </li>
+</ul>
+
+```{r resultCard, drake=F}
+resultCard <- tags$div(class="info-text", tags$div(class="name"," 宜蘭縣"),
+         tags$ul(class="vote-text", 
+                 tags$li( 
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_tsai.png"),
+                   "蔡英文得票率", tags$span(class="ddp"," 63.3%")),
+                 tags$li( 
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_han.png"),
+                   "韓國瑜得票率", tags$span(class="kmt"," 32.8%")), 
+                 tags$li( 
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_song.png"),
+                   "宋楚瑜得票率", tags$span(class="pfp"," 3.9%"))))
+```
+
+```{r resultCard, drake=T}
+resultCard <- tags$div(class="card blue lighten-5", 
+        tags$div(class="card-content", 
+          tags$span(class="card-title","宜蘭縣"),
+          tags$ul(class="vote-text",
+                  resultCard_li)
+        )
+      )
+```
+
+```{r resultCard_li}
+resultCard_li <- tagList( 
+                 tags$li( 
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_tsai.png"),
+                   "蔡英文得票率", tags$span(class="ddp"," 63.3%")),
+                 tags$li( 
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_han.png"),
+                   "韓國瑜得票率", tags$span(class="kmt"," 32.8%")), 
+                 tags$li( 
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_song.png"),
+                   "宋楚瑜得票率", tags$span(class="pfp"," 3.9%")))
+```
+
+
+## Widgets
+
+  * Widgets can be designed in a separate file and saved in a Rdata for loading here.
+  
+  * While loading, make sure `envir = .GlobalEnv`.
+  
+  * Label widget loading chunk `makecondition_xxx`. 
+  
+```{r makecondition_widgets}
+library(plotly)
+```
+
+
+```{r plt_taiwanElection_partyColor_noGuide}
+plt_taiwanElection_partyColor %>%
+  hide_guides() -> plt_taiwanElection_partyColor_noGuide
+m <- list(
+  l = 5,
+  r = 5,
+  b = 10,
+  t = 10,
+  pad = 4
+)
+plt_taiwanElection_partyColor_noGuide %>%
+  layout(height = 800, margin = m)
+
+```
+
+### sidenav
+
+<nav>...</nav>
+<ul>....</ul>
+<a>.....</a>
+
+
+```{r sidenav_nav, drake=F}
+sidenav_nav <- tags$nav()
+```
+
+
+```{r sidenav_ul, drake=F}
+sidenav_ul <-  tags$ul(id="slide-out", class="sidenav", 
+    tags$li( tags$div(class="user-view", 
+      tags$div(class="background", 
+        tags$img(src="https://materializecss.com/images/yuna.jpg")
+      ),
+      tags$a(href="#user", tags$img(class="circle", src="images/yuna.jpg")),
+      tags$a(href="#name", tags$span(class="white-text name"," John Doe")),
+      tags$a(href="#email", tags$span(class="white-text email"," jdandturk@gmail.com"))
+    )),
+    tags$li( tags$a(href="#!", tags$i(class="material-icons"," cloud"), "First Link With Icon")),
+    tags$li( tags$a(href="#!"," Second Link")),
+    tags$li( tags$div(class="divider"," ")),
+    tags$li( tags$a(class="subheader"," Subheader")),
+    tags$li( tags$a(class="waves-effect", href="#!"," Third Link With Waves"))
+  )
+```
+
+
+```{r sidenav_a, drake=F}
+sidenav_a <- tags$a(href="#" , `data-target`="slide-out", class="sidenav-trigger", tags$i(class="material-icons"," menu"))
+        
+```
+
+
+```{r sidenav, drake=F}
+sidenav <- tagList(
+  sidenav_nav,
+  sidenav_ul,
+  sidenav_a
+)
+```
+
+## Body Tags
+
+```{r bodyTags}
+bodyTags <- {
+  htmltools::tagList(
+    tags$main(
+      tags$h5(class="center-align",
+      "2020總統大選開票地圖"),
+             sidenav_a
+    ),
+    tags$div(class="container",
+             tags$div(class="row",
+                      tags$div(class="col m4 s12",
+                               plt_taiwanElection_partyColor_noGuide),
+                      tags$div(class="col m6 hide-on-small-only",
+                               resultCard
+                               )
+                      ), sidenav_ul)
+  )
+}
+```
+
+
+## HTML Structure
+
+```{r html_placeholder}
+html_placeholder <- tags$html(
+  tags$head(
+    do.call(htmltools::tagList, headTags),
+    tags$meta(
+      name="viewport",
+      content="width=device-width, initial-scale=1.0"
+    )
+  ),
+  tags$body(
+    do.call(htmltools::tagList, bodyTags)
+  )
+)
+```
+
+## Dependencies
+
+### Head Tags
+
+```{r headTags}
+headTags <- {
+  htmltools::tagList(
+    htmltools::tags$link(
+      href="https://fonts.googleapis.com/icon?family=Material+Icons",
+      rel="stylesheet"
+    )
+  )
+}
+```
+
+### Define dependency
+
+```{r myDependency}
+myDependency <- htmltools::htmlDependency(
+  name="myown",
+  version="1.0",
+  src=c(filepath=web$cssJsPath),
+  stylesheet = "css/mystyle.css",
+  script = "js/mydesign.js",
+  head = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC">
+'
+)
+```
+
+  * If src is in other path, use `web$config_cssJsPath("your_path")` in **makecondition** -- no need to change `web$cssJsPath` (it will change accordingly).
+
+
+```{r local_jquery}
+local_jquery <- 
+  htmltools::htmlDependency(
+    name="jquery",
+    version="3.5.1",
+    src=c(href = "lib/jquery-3.5.1"),
+    # to use the same library here must use href, not filepath; otherwise, the current jquery system will be removed.
+    script = c("jquery.min.js")
+  )
+```
+
+### Attach dependency
+
+
+```{r html_complete}
+html_complete <- 
+  htmltools::tagList(
+    html_placeholder,
+    web$htmlDependencies$materialise(),
+    local_jquery, 
+    myDependency
+  )
+```
+
+  * If not using jquery from htmlwidgets, replace `local_jquery` with `web$htmlDependencies$jquery()`
+
+
+## Save
+
+```{r save_html}
+htmltools::save_html(
+  html_complete, 
+  file = web$output_filepath(),
+  libdir="lib"
+)
+```
+
+## Browse
+
+```{r}
+web$browse()
+```
+
+
+

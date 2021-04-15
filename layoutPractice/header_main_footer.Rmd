@@ -127,29 +127,6 @@ controlPanel <- tags$form(action="#",
   )
 ```
 
-
-```
-content_sidenav <- tagList(
-  tags$ul(id="slide-out", class="sidenav", 
-    tags$li( tags$div(class="user-view", 
-      tags$div(class="background", 
-        tags$img(src="images/office.jpg")
-      ),
-      tags$a(href="#user", tags$img(class="circle", src="images/yuna.jpg")),
-      tags$a(href="#name", tags$span(class="white-text name"," John Doe")),
-      tags$a(href="#email", tags$span(class="white-text email", "jdandturk@gmail.com"))
-    )),
-    tags$li( tags$a(href="#!", tags$i(class="material-icons"," cloud"), "First Link With Icon")),
-    tags$li( tags$a(href="#!"," Second Link")),
-    tags$li( tags$div(class="divider"," ")),
-    tags$li( tags$a(class="subheader"," Subheader")),
-    tags$li( tags$a(class="waves-effect", href="#!"," Third Link With Waves"))
-  ),
-  tags$a(href="#" , `data-target`="slide-out", class="sidenav-trigger", tags$i(class="material-icons"," menu"))
-        
-)
-```
-
 ### main
 
 ```{r main}
@@ -195,7 +172,7 @@ layout_columns <- tags$div(class="row",
           
 ```
 
-```{r layout_columns, drake=F}
+```{r layout_columns2, drake = F}
 layout_columns <- tags$div(class="row", 
       tags$div(class="col s12 m6 l4", list_plots$`price data`),
       tags$div(class="col s12 m6 l4", list_plots$`price data2`),
