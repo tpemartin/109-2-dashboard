@@ -44,3 +44,17 @@ UI/.drake_election/
 dash2/.dash2/
 dashboard0/.myHtml/
 eventListener/.eventlisten/
+layoutPractice/.header_main_footer/
+graphQuery/.graphquery/
+header_main_footer/.header_main_footer/
+multiplots/.mtplots/
+multiplots/.temp/
+docs2/
+header_main_footer/.header-main-footer/
+electionMap/.drake_electionAfter2/
+electionMap/.drake_electionAfter2/
+electionMap/.drake_electionAfter2/
+electionMap/voteData.Rdata
+docs/lib/myown-1.0/plt_taiwanElection_partyColor.Rdata
+*.Rdata
+*.Rproj

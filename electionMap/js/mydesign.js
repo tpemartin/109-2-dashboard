@@ -4,3 +4,4 @@ document.addEventListener('DOMContentLoaded', function() {
     var elems_sidenav = document.querySelectorAll('.sidenav');
     var instances_sidenav = M.Sidenav.init(elems_sidenav);
 });
+var d_hover;

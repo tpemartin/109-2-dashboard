@@ -1,0 +1,296 @@
+---
+drake_cache: ".drake_electionAfter2"
+---
+
+
+## Materialise Framework
+
+  * <https://materializecss.com/>
+
+```{r}
+xfun::download_file("https://www.dropbox.com/s/2desfhsqbqmq71j/plt_taiwanElection_partyColor.Rdata?dl=1", mode="wb")
+
+xfun::download_file("https://www.dropbox.com/s/sb4fjpm4xjzgsns/voteData.Rdata?dl=1")
+load("voteData.Rdata")
+```
+
+
+```{r makecondition_election}
+load("plt_taiwanElection_partyColor.Rdata", envir=.GlobalEnv)
+```
+
+## Setup environment
+
+  * Addins: Initiate drake -> `drake$source_plan()` -> `drake$makePlan()`.
+  
+  * `web$browse()` to see the output. 
+  
+  * If any change to Rmd, save the Rmd, then `drake$update()` -> `web$browser()` to see the change.
+  
+  * Your html output file is in `web$output_filepath()`.
+
+```{r makecondition}
+library(dplyr)
+library(htmltools)
+library(econR)
+.GlobalEnv$web <- econR::Web()
+web$foldername="docs" # output folder name
+web$html_filename <- "election2.html"
+# makecondition
+load("voteData.Rdata")
+```
+
+## Body elements
+
+### resultCard
+
+```{r resultCard, drake=T}
+resultCard <- tags$div(class="card blue lighten-5", 
+        tags$div(class="card-content", 
+          tags$span(id="countyname", class="card-title","宜蘭縣"),
+          tags$ul(class="vote-text",
+                  resultCard_li)
+        )
+      )
+```
+
+```{r resultCard_li}
+resultCard_li <- tagList( 
+                 tags$li( 
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_tsai.png"),
+                   "蔡英文得票率", tags$span(id="dpp"," 63.3%")),
+                 tags$li( 
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_han.png"),
+                   "韓國瑜得票率", tags$span(id="kmt"," 32.8%")), 
+                 tags$li( 
+                   tags$img(src="https://web.cw.com.tw/2020-taiwan-presidential-election/img/map/head_song.png"),
+                   "宋楚瑜得票率", tags$span(id="pfp"," 3.9%")))
+```
+
+
+## Widgets
+
+  * Widgets can be designed in a separate file and saved in a Rdata for loading here.
+  
+  * While loading, make sure `envir = .GlobalEnv`.
+  
+  * Label widget loading chunk `makecondition_xxx`. 
+
+
+
+```{r makecondition_voteData}
+library(plotly)
+```
+
+
+```{r plt_taiwanElection_partyColor_noGuide}
+plt_taiwanElection_partyColor %>%
+  hide_guides() -> plt_taiwanElection_partyColor_noGuide
+m <- list(
+  l = 5,
+  r = 5,
+  b = 10,
+  t = 10,
+  pad = 4
+)
+plt_taiwanElection_partyColor_noGuide %>%
+  layout(height = 800, margin = m) %>%
+  htmlwidgets::appendContent(
+    tags$div(class="right hide-on-small-only",
+                               resultCard
+                               ) )
+
+```
+
+```{r plt_taiwanElection_dataRelease, drake=F}
+plt_taiwanElection_partyColor_noGuide %>%
+  htmlwidgets::onRender(
+    jsCode = "function(el) { 
+      el.on('plotly_hover', function(d) { 
+        d_hover = d; 
+        console.log('Hover: ', d_hover); 
+      });
+    }"
+  ) -> plt_taiwanElection_dataRelease
+```
+
+#### onRender
+
+  * save experimental js externally and read in ex post. 
+  
+
+```{r jsCode, drake=F}
+jsCode = glue::glue("function(el) { 
+      el.on('plotly_hover', function(d) { 
+    <<lines_resultsCardReplacement>>
+        console.log('Hover: ', d); 
+      });
+    }", .open = "<<", .close=">>"
+  )
+```
+
+```{r plt_taiwanElection_dataRelease, drake=F}
+plt_taiwanElection_partyColor_noGuide %>%
+  htmlwidgets::onRender(
+    jsCode = jsCode) -> plt_taiwanElection_dataRelease
+```
+
+```{r plt_taiwanElection_dataRelease}
+plt_taiwanElection_partyColor_noGuide %>%
+  htmlwidgets::onRender(
+    jsCode = "function(el) { 
+  el.on('plotly_hover', function(d) { 
+        d_hover = d;
+        
+// obtain hover release data for COUNTYNAME
+d_hover_name = d_hover.points[0].fullData.name;
+
+// get vote share json data
+voteShareObj = JSON.parse($('#voteShare').html());
+
+// find the index of COUNTYNAME value
+ind_hover = voteShareObj.COUNTYNAME.indexOf(d_hover_name);
+
+// replace all card details with the corresponding data from vote share data
+var $dpp = $('#dpp');
+var $kmt = $('#kmt');
+var $pfp = $('#pfp');
+var $county_name = $('#countyname');
+$county_name.html(d_hover_name);
+$pfp.html(voteShareObj.pfp[ind_hover]);
+$kmt.html(voteShareObj.kmt[ind_hover]);
+$dpp.html(voteShareObj.dpp[ind_hover]);
+        
+    // console.log('Hover: ', d_hover); 
+  });
+}"
+  ) -> plt_taiwanElection_dataRelease
+```
+
+## External data
+
+```{r voteDataHtml}
+voteDataHtml <- 
+  tags$script(
+    id="voteShare", # for later access convenience
+    type="application/json", # let html know its json
+    jsonlite::toJSON(as.list(voteData)) # as.list is optional
+  )
+```
+
+## Body Tags
+
+```{r bodyTags}
+bodyTags <- {
+  htmltools::tagList(
+    tags$main(
+      tags$h5(class="center-align",
+      "2020總統大選開票地圖")
+    ),
+    tags$div(class="container",
+             tags$div(class="row",
+                      tags$div(class="col m12 s12",
+                                plt_taiwanElection_dataRelease 
+                      ))
+    ),
+  voteDataHtml)
+}
+```
+
+
+
+
+## HTML Structure
+
+```{r html_placeholder}
+html_placeholder <- tags$html(
+  tags$head(
+    do.call(htmltools::tagList, headTags),
+    tags$meta(
+      name="viewport",
+      content="width=device-width, initial-scale=1.0"
+    )
+  ),
+  tags$body(
+    do.call(htmltools::tagList, bodyTags)
+  )
+)
+```
+
+## Dependencies
+
+### Head Tags
+
+```{r headTags}
+headTags <- {
+  htmltools::tagList(
+    htmltools::tags$link(
+      href="https://fonts.googleapis.com/icon?family=Material+Icons",
+      rel="stylesheet"
+    )
+  )
+}
+```
+
+### Define dependency
+
+```{r myDependency}
+myDependency <- htmltools::htmlDependency(
+  name="myown",
+  version="1.0",
+  src=c(filepath=web$cssJsPath),
+  stylesheet = "css/mystyle.css",
+  script = "js/mydesign.js",
+  head = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC">
+'
+)
+```
+
+  * If src is in other path, use `web$config_cssJsPath("your_path")` in **makecondition** -- no need to change `web$cssJsPath` (it will change accordingly).
+
+
+```{r local_jquery}
+local_jquery <- 
+  htmltools::htmlDependency(
+    name="jquery",
+    version="3.5.1",
+    src=c(href = "lib/jquery-3.5.1"),
+    # to use the same library here must use href, not filepath; otherwise, the current jquery system will be removed.
+    script = c("jquery.min.js")
+  )
+```
+
+### Attach dependency
+
+
+```{r html_complete}
+html_complete <- 
+  htmltools::tagList(
+    html_placeholder,
+    web$htmlDependencies$materialise(),
+    local_jquery, 
+    myDependency
+  )
+```
+
+  * If not using jquery from htmlwidgets, replace `local_jquery` with `web$htmlDependencies$jquery()`
+
+
+## Save
+
+```{r save_html}
+htmltools::save_html(
+  html_complete, 
+  file = web$output_filepath(),
+  libdir="lib"
+)
+```
+
+## Browse
+
+```{r}
+web$browse()
+```
+
+
+
